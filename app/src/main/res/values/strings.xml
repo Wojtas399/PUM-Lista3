@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PUM-Lista3</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todo_list_title">TODO list title</string>
+    <string name="todo_list_deadline">TODO list deadline</string>
+    <string name="todo_list_description">TODO list description</string>
 </resources>
