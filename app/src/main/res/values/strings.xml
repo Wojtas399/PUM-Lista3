@@ -5,4 +5,6 @@
     <string name="todo_list_deadline">TODO list deadline</string>
     <string name="todo_list_description">TODO list description</string>
     <string name="fab_add">Add</string>
+    <string name="item_title">Item title</string>
+    <string name="item_subtitle">Item subtitle</string>
 </resources>
