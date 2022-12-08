@@ -1,4 +1,4 @@
-package com.example.pum_lista3.entities
+package com.example.pum_lista3.data.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

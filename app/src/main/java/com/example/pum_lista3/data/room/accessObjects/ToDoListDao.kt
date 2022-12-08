@@ -1,11 +1,11 @@
-package com.example.pum_lista3.accessObjects
+package com.example.pum_lista3.data.room.accessObjects
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.pum_lista3.entities.ToDoList
+import com.example.pum_lista3.data.room.entities.ToDoList
 
 @Dao
 interface ToDoListDao {
