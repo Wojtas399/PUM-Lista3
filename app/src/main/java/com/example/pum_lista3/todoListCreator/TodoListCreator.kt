@@ -1,4 +1,4 @@
-package com.example.pum_lista3.fragments
+package com.example.pum_lista3.todoListCreator
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListCreatorBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+@AndroidEntryPoint
 class TodoListCreator : Fragment() {
   private lateinit var binding: FragmentTodoListCreatorBinding
-  var listNumber: Int? = null
-  var date: LocalDate? = null
-  var description: String? = null
+  private val viewModel: TodoListCreatorViewModel by viewModels()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +28,7 @@ class TodoListCreator : Fragment() {
     setListNumberValueListener()
     setDateValueListener()
     setDescriptionValueListener()
+    setButtonOnClickListener()
 
     return binding.root
   }
@@ -40,19 +42,26 @@ class TodoListCreator : Fragment() {
 
   private fun setListNumberValueListener() {
     binding.listNumberInput.setOnItemClickListener { _, _, itemIndex, _ ->
-      listNumber = itemIndex + 1
+      viewModel.changeListNumber(itemIndex + 1)
     }
   }
 
   private fun setDateValueListener() {
     binding.datePicker.setOnDateChangedListener { _, year, month, day ->
-      date = LocalDate.of(year, month, day)
+      val date: LocalDate = LocalDate.of(year, month + 1, day)
+      viewModel.changeDeadline(date)
     }
   }
 
   private fun setDescriptionValueListener() {
     binding.listDescriptionInput.addTextChangedListener {
-      description = it.toString()
+      viewModel.changeDescription(it.toString())
+    }
+  }
+
+  private fun setButtonOnClickListener() {
+    binding.submitButton.setOnClickListener {
+      viewModel.submit()
     }
   }
 }

@@ -13,7 +13,7 @@ interface ToDoListDao {
   fun getAll(): List<ToDoList>
 
   @Query("SELECT * FROM toDoList WHERE uid=:id")
-  fun getById(id: String)
+  fun getById(id: String): ToDoList
 
   @Insert
   fun insertToDoList(toDoList: ToDoList)

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/todoListCreator"
-        android:name="com.example.pum_lista3.fragments.TodoListCreator"
+        android:name="com.example.pum_lista3.todoListCreator.TodoListCreator"
         android:label="fragment_todo_list_creator"
         tools:layout="@layout/fragment_todo_list_creator" />
     <fragment

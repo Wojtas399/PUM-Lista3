@@ -12,7 +12,7 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:padding="24dp"
-        tools:context=".fragments.TodoListCreator">
+        tools:context=".todoListCreator.TodoListCreator">
 
         <TextView
             android:layout_width="match_parent"
@@ -72,6 +72,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -98,5 +99,11 @@
                     android:scrollHorizontally="false" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dodaj" />
     </LinearLayout>
 </ScrollView>

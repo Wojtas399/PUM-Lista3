@@ -1,12 +1,14 @@
 package com.example.pum_lista3.data.repositories
 
 import android.database.Observable
+import android.util.Log
 import com.example.pum_lista3.domain.interfaces.TodoListInterface
 import com.example.pum_lista3.data.room.databases.ToDoListDb
 import com.example.pum_lista3.domain.entities.TodoList
 import java.time.LocalDate
+import javax.inject.Inject
 
-class TodoListRepository(
+class TodoListRepository @Inject constructor(
   val db: ToDoListDb
 ) : TodoListInterface {
   override fun getAllLists(): Observable<List<TodoList>?> {
@@ -22,7 +24,9 @@ class TodoListRepository(
     deadline: LocalDate,
     description: String
   ) {
-    TODO("Not yet implemented")
+    Log.d("REPOSITORY", listNumber.toString())
+    Log.d("REPOSITORY", deadline.toString())
+    Log.d("REPOSITORY", description)
   }
 
   override suspend fun updateList(
