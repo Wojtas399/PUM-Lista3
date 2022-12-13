@@ -3,7 +3,7 @@ package com.example.pum_lista3.dependency_injection
 import android.content.Context
 import androidx.room.Room
 import com.example.pum_lista3.data.repositories.TodoListRepository
-import com.example.pum_lista3.data.room.databases.ToDoListDb
+import com.example.pum_lista3.data.room.TodoListDb
 import com.example.pum_lista3.domain.interfaces.TodoListInterface
 import dagger.Module
 import dagger.Provides
@@ -19,10 +19,10 @@ object AppModule {
   @Singleton
   fun provideTodoListDb(
     @ApplicationContext context: Context,
-  ): ToDoListDb {
+  ): TodoListDb {
     return Room.databaseBuilder(
       context,
-      ToDoListDb::class.java,
+      TodoListDb::class.java,
       "todo-list-db"
     ).build()
   }
@@ -30,7 +30,7 @@ object AppModule {
   @Provides
   @Singleton
   fun provideTodoListInterface(
-    todoListDb: ToDoListDb
+    todoListDb: TodoListDb
   ) : TodoListInterface {
     return TodoListRepository(
       db = todoListDb
