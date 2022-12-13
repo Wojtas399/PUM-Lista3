@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    android:elevation="10dp"
+    app:cardPreventCornerOverlap="false"
+    android:layout_margin="8dp">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:orientation="vertical">
 
     <TextView
+        android:id="@+id/todoListTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/item_title"
@@ -12,7 +23,9 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/todoListDeadline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/item_subtitle" />
-</LinearLayout>
+  </LinearLayout>
+</androidx.cardview.widget.CardView>

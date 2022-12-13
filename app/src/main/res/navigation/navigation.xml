@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/todoListCollection">
+    app:startDestination="@id/todoListsOverview">
 
     <fragment
         android:id="@+id/todoListCreator"
@@ -16,14 +16,14 @@
         android:label="fragment_to_do_list_preview"
         tools:layout="@layout/fragment_todo_list_preview" />
     <fragment
-        android:id="@+id/todoListCollection"
-        android:name="com.example.pum_lista3.fragments.TodoListCollection"
-        android:label="ToDoListCollection" >
+            android:id="@+id/todoListsOverview"
+            android:name="com.example.pum_lista3.todoListsOverview.TodoListsOverview"
+            android:label="TodoListsOverview">
         <action
-            android:id="@+id/action_todoListCollection_to_todoListPreview"
-            app:destination="@id/todoListPreview" />
+                android:id="@+id/action_todoListCollection_to_todoListPreview"
+                app:destination="@id/todoListPreview" />
         <action
-            android:id="@+id/action_todoListCollection_to_todoListCreator"
-            app:destination="@id/todoListCreator" />
+                android:id="@+id/action_todoListsOverview_to_todoListCreator"
+                app:destination="@id/todoListCreator" />
     </fragment>
 </navigation>
