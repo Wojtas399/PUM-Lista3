@@ -12,15 +12,19 @@
         tools:layout="@layout/fragment_todo_list_creator" />
     <fragment
         android:id="@+id/todoListPreview"
-        android:name="com.example.pum_lista3.fragments.TodoListPreview"
+        android:name="com.example.pum_lista3.todoListPreview.TodoListPreview"
         android:label="fragment_to_do_list_preview"
-        tools:layout="@layout/fragment_todo_list_preview" />
+        tools:layout="@layout/fragment_todo_list_preview" >
+        <argument
+            android:name="todoListId"
+            app:argType="string" />
+    </fragment>
     <fragment
             android:id="@+id/todoListsOverview"
             android:name="com.example.pum_lista3.todoListsOverview.TodoListsOverview"
             android:label="TodoListsOverview">
         <action
-                android:id="@+id/action_todoListCollection_to_todoListPreview"
+                android:id="@+id/action_todoListsOverview_to_todoListPreview"
                 app:destination="@id/todoListPreview" />
         <action
                 android:id="@+id/action_todoListsOverview_to_todoListCreator"

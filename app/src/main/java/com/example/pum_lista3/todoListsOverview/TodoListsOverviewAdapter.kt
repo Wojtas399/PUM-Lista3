@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pum_lista3.R
 import com.example.pum_lista3.domain.entities.TodoList
@@ -31,14 +33,21 @@ class TodoListsOverviewAdapter(
   }
 
   inner class TodoListsOverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private var titleTextView: TextView = view.findViewById(R.id.todoListTitle)
-    private var deadlineTextView: TextView = view.findViewById(R.id.todoListDeadline)
+    private val card: CardView = view.findViewById(R.id.todoListItemCard)
+    private val titleTextView: TextView = view.findViewById(R.id.todoListTitle)
+    private val deadlineTextView: TextView = view.findViewById(R.id.todoListDeadline)
 
     fun bind(todoList: TodoList) {
       val title = "Lista ${todoList.listNumber}"
       val subtitle = "Termin oddania: ${todoList.deadline.toUIFormat()}"
       titleTextView.text = title
       deadlineTextView.text = subtitle
+      card.setOnClickListener {
+        val action = TodoListsOverviewDirections.actionTodoListsOverviewToTodoListPreview(
+          todoListId = todoList.id,
+        )
+        Navigation.findNavController(this.itemView).navigate(action)
+      }
     }
   }
 }

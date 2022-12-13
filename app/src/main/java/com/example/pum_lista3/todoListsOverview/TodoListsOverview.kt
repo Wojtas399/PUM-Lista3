@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListsOverviewBinding
 import com.example.pum_lista3.domain.entities.TodoList
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,10 +41,7 @@ class TodoListsOverview : Fragment() {
         viewModel.state.collect {
           val allTodoLists: List<TodoList>? = it.allTodoLists
           if (allTodoLists != null) {
-            binding.recyclerView.apply {
-              adapter = TodoListsOverviewAdapter(allTodoLists)
-              layoutManager = LinearLayoutManager(requireContext())
-            }
+            setRecyclerView(allTodoLists)
           }
         }
       }
@@ -56,9 +54,16 @@ class TodoListsOverview : Fragment() {
     }
   }
 
+  private fun setRecyclerView(allTodoLists: List<TodoList>) {
+    binding.recyclerView.apply {
+      adapter = TodoListsOverviewAdapter(allTodoLists)
+      layoutManager = LinearLayoutManager(requireContext())
+    }
+  }
+
   private fun navigateToTodoListCreator() {
-    val action =
-      TodoListsOverviewDirections.actionTodoListsOverviewToTodoListCreator()
-    Navigation.findNavController(binding.root).navigate(action)
+    Navigation.findNavController(binding.root).navigate(
+      R.id.action_todoListsOverview_to_todoListCreator
+    )
   }
 }
