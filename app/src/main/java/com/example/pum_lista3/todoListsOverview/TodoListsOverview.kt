@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TodoListsOverview : Fragment() {
   private lateinit var binding: FragmentTodoListsOverviewBinding
-  private val viewModel : TodoListsOverviewViewModel by viewModels()
+  private val viewModel: TodoListsOverviewViewModel by viewModels()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +38,7 @@ class TodoListsOverview : Fragment() {
   private fun collectViewModel() {
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.state.collect {
-          val allTodoLists: List<TodoList>? = it.allTodoLists
-          if (allTodoLists != null) {
-            setRecyclerView(allTodoLists)
-          }
-        }
+        viewModel.state.collect { setContent(it) }
       }
     }
   }
@@ -52,6 +47,10 @@ class TodoListsOverview : Fragment() {
     binding.floatingButton.setOnClickListener {
       navigateToTodoListCreator()
     }
+  }
+
+  private fun setContent(state: TodoListsOverviewState) {
+    state.allTodoLists?.let { setRecyclerView(it) }
   }
 
   private fun setRecyclerView(allTodoLists: List<TodoList>) {

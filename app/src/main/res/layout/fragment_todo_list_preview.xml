@@ -8,6 +8,7 @@
     tools:context=".todoListPreview.TodoListPreview">
 
     <TextView
+        android:id="@+id/previewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/todo_list_title"
@@ -15,6 +16,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/previewSubtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -22,6 +24,7 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/previewDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/todo_list_description" />
