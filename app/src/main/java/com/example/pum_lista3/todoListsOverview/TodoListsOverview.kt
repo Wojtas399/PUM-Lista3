@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,10 +30,15 @@ class TodoListsOverview : Fragment() {
     binding =
       FragmentTodoListsOverviewBinding.inflate(inflater, container, false)
 
+    setToolbarTitle()
     collectViewModel()
     setFloatingButtonOnClickListener()
 
     return binding.root
+  }
+
+  private fun setToolbarTitle() {
+    requireActivity().findViewById<Toolbar>(R.id.toolbar).title = "Wszystkie listy"
   }
 
   private fun collectViewModel() {
