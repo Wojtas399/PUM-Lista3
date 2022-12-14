@@ -1,7 +1,7 @@
 package com.example.pum_lista3.todoListPreview
 
+import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -12,11 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListPreviewBinding
 import com.example.pum_lista3.extensions.toUIFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 
 @AndroidEntryPoint
@@ -31,7 +33,7 @@ class TodoListPreview : Fragment() {
         binding = FragmentTodoListPreviewBinding.inflate(inflater, container, false)
 
         setToolbarTitle()
-        setDeleteButton()
+        setMenuProvider()
         collectViewModel()
         val todoListId: String? = getTodoListIdFromArgs()
         if (todoListId != null) {
@@ -45,30 +47,18 @@ class TodoListPreview : Fragment() {
         requireActivity().findViewById<Toolbar>(R.id.toolbar).title = "Podgląd listy"
     }
 
-    private fun setDeleteButton() {
+    private fun setMenuProvider() {
         requireActivity().findViewById<Toolbar>(R.id.toolbar)
             .addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.todo_list_preview_menu, menu)
-                    menu.findItem(R.id.todoListPreviewMenuDeleteIcon).icon?.let {
-                        DrawableCompat.setTint(
-                            it,
-                            ContextCompat.getColor(requireContext(), R.color.white)
-                        )
-                    }
+                    createDeleteButton(menu, menuInflater)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    Log.d("MENU ITEM", "It was clicked!")
+                    onDeleteButtonPressed()
                     return true
                 }
             }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun getTodoListIdFromArgs(): String? {
-        val bundle: Bundle = arguments ?: return null
-        val args = TodoListPreviewArgs.fromBundle(bundle)
-        return args.todoListId
     }
 
     private fun collectViewModel() {
@@ -79,10 +69,45 @@ class TodoListPreview : Fragment() {
         }
     }
 
+    private fun getTodoListIdFromArgs(): String? {
+        val bundle: Bundle = arguments ?: return null
+        val args = TodoListPreviewArgs.fromBundle(bundle)
+        return args.todoListId
+    }
+
+    private fun createDeleteButton(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.todo_list_preview_menu, menu)
+        menu.findItem(R.id.todoListPreviewMenuDeleteIcon).icon?.let {
+            DrawableCompat.setTint(
+                it,
+                ContextCompat.getColor(requireContext(), R.color.white)
+            )
+        }
+    }
+
+    private fun onDeleteButtonPressed() {
+        val dialogBuilder = AlertDialog.Builder(requireActivity())
+        dialogBuilder.setMessage("Czy na pewno chcesz usunąć tę listę?").setCancelable(false)
+            .setPositiveButton("Usuń") { _, _ ->
+                runBlocking {
+                    launch {
+                        viewModel.deleteTodoList()
+                    }
+                }
+                goToPreviousScreen()
+            }.setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
+        val alert = dialogBuilder.create()
+        alert.show()
+    }
+
     private fun setContent(state: TodoListPreviewState) {
         state.listNumber?.let { setTitle(it) }
         state.deadline?.let { setSubtitle(it) }
         state.description?.let { setDescription(it) }
+    }
+
+    private fun goToPreviousScreen() {
+        findNavController().popBackStack()
     }
 
     private fun setTitle(listNumber: Int) {
