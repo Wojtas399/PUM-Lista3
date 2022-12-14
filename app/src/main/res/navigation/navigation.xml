@@ -9,7 +9,12 @@
         android:id="@+id/todoListCreator"
         android:name="com.example.pum_lista3.todoListCreator.TodoListCreator"
         android:label="fragment_todo_list_creator"
-        tools:layout="@layout/fragment_todo_list_creator" />
+        tools:layout="@layout/fragment_todo_list_creator" >
+        <argument
+                android:name="todoListId"
+                app:argType="string"
+                app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/todoListPreview"
         android:name="com.example.pum_lista3.todoListPreview.TodoListPreview"
@@ -18,6 +23,9 @@
         <argument
             android:name="todoListId"
             app:argType="string" />
+        <action
+                android:id="@+id/action_todoListPreview_to_todoListCreator"
+                app:destination="@id/todoListCreator" />
     </fragment>
     <fragment
             android:id="@+id/todoListsOverview"

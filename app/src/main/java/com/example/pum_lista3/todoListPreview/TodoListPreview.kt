@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListPreviewBinding
@@ -34,6 +35,8 @@ class TodoListPreview : Fragment() {
 
         setToolbarTitle()
         setMenuProvider()
+        setEditButtonOnClickListener()
+
         collectViewModel()
         val todoListId: String? = getTodoListIdFromArgs()
         if (todoListId != null) {
@@ -59,6 +62,17 @@ class TodoListPreview : Fragment() {
                     return true
                 }
             }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun setEditButtonOnClickListener() {
+        binding.editButton.setOnClickListener {
+            viewModel.state.value.todoList?.run {
+                val action = TodoListPreviewDirections.actionTodoListPreviewToTodoListCreator(
+                    todoListId = this.id
+                )
+                Navigation.findNavController(binding.root).navigate(action)
+            }
+        }
     }
 
     private fun collectViewModel() {
@@ -101,9 +115,11 @@ class TodoListPreview : Fragment() {
     }
 
     private fun setContent(state: TodoListPreviewState) {
-        state.listNumber?.let { setTitle(it) }
-        state.deadline?.let { setSubtitle(it) }
-        state.description?.let { setDescription(it) }
+        state.todoList?.let {
+            setTitle(it.listNumber)
+            setSubtitle(it.deadline)
+            setDescription(it.description)
+        }
     }
 
     private fun goToPreviousScreen() {
