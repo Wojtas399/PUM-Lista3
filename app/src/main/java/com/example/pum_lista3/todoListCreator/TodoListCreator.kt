@@ -9,6 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListCreatorBinding
@@ -28,8 +31,13 @@ class TodoListCreator : Fragment() {
     ): View {
         binding = FragmentTodoListCreatorBinding.inflate(inflater, container, false)
 
-        setToolbarTitle()
         setupDropdownItem()
+
+        collectViewModel()
+        getTodoListIdFromArgs().run {
+            viewModel.initialize(this)
+        }
+
         setListNumberValueListener()
         setDateValueListener()
         setDescriptionValueListener()
@@ -38,15 +46,30 @@ class TodoListCreator : Fragment() {
         return binding.root
     }
 
-    private fun setToolbarTitle() {
-        requireActivity().findViewById<Toolbar>(R.id.toolbar).title = "Nowa lista"
-    }
-
     private fun setupDropdownItem() {
         val listNumbers = resources.getStringArray(R.array.list_numbers)
         val arrayAdapter =
             ArrayAdapter(requireContext(), R.layout.dropdown_item, listNumbers)
         binding.listNumberInput.setAdapter(arrayAdapter)
+    }
+
+    private fun collectViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    state.takeIf { it.status == TodoListCreatorStatus.Initial }?.run {
+                        setToolbarTitleAndButtonLabel(this.mode)
+                        setInitialFormValues(this)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getTodoListIdFromArgs(): String? {
+        val bundle: Bundle = arguments ?: return null
+        val args = TodoListCreatorArgs.fromBundle(bundle)
+        return args.todoListId
     }
 
     private fun setListNumberValueListener() {
@@ -79,7 +102,51 @@ class TodoListCreator : Fragment() {
         }
     }
 
+    private fun setToolbarTitleAndButtonLabel(creatorMode: TodoListCreatorMode) {
+        creatorMode.run {
+            setToolbarTitle(this)
+            setSubmitButtonLabel(this)
+        }
+    }
+
+    private fun setInitialFormValues(todoListCreatorState: TodoListCreatorState) {
+        todoListCreatorState.listNumber?.run { setListNumberValue(this) }
+        todoListCreatorState.deadline?.run { setDeadlineValue(this) }
+        todoListCreatorState.description?.run { setDescriptionValue(this) }
+    }
+
     private fun goBackToPreviousScreen() {
         findNavController().popBackStack()
+    }
+
+    private fun setToolbarTitle(creatorMode: TodoListCreatorMode) {
+        val title = when (creatorMode) {
+            TodoListCreatorMode.Create -> "Nowa lista"
+            TodoListCreatorMode.Edit -> "Edycja listy"
+        }
+        requireActivity().findViewById<Toolbar>(R.id.toolbar).title = title
+    }
+
+    private fun setSubmitButtonLabel(creatorMode: TodoListCreatorMode) {
+        binding.submitButton.text = when (creatorMode) {
+            TodoListCreatorMode.Create -> "Dodaj"
+            TodoListCreatorMode.Edit -> "Zapisz"
+        }
+    }
+
+    private fun setListNumberValue(number: Int) {
+        binding.listNumberInput.setText("$number", false)
+    }
+
+    private fun setDeadlineValue(deadline: LocalDate) {
+        binding.datePicker.updateDate(
+            deadline.year,
+            deadline.monthValue - 1,
+            deadline.dayOfMonth
+        )
+    }
+
+    private fun setDescriptionValue(description: String) {
+        binding.listDescriptionInput.setText(description)
     }
 }

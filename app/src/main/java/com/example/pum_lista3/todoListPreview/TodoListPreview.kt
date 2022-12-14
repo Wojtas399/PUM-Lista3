@@ -38,9 +38,8 @@ class TodoListPreview : Fragment() {
         setEditButtonOnClickListener()
 
         collectViewModel()
-        val todoListId: String? = getTodoListIdFromArgs()
-        if (todoListId != null) {
-            viewModel.initialize(todoListId)
+        getTodoListIdFromArgs()?.run {
+            viewModel.initialize(this)
         }
 
         return binding.root

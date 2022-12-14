@@ -20,55 +20,56 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TodoListsOverview : Fragment() {
-  private lateinit var binding: FragmentTodoListsOverviewBinding
-  private val viewModel: TodoListsOverviewViewModel by viewModels()
+    private lateinit var binding: FragmentTodoListsOverviewBinding
+    private val viewModel: TodoListsOverviewViewModel by viewModels()
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    binding =
-      FragmentTodoListsOverviewBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding =
+            FragmentTodoListsOverviewBinding.inflate(inflater, container, false)
 
-    setToolbarTitle()
-    collectViewModel()
-    setFloatingButtonOnClickListener()
+        setToolbarTitle()
+        collectViewModel()
+        setFloatingButtonOnClickListener()
 
-    return binding.root
-  }
-
-  private fun setToolbarTitle() {
-    requireActivity().findViewById<Toolbar>(R.id.toolbar).title = "Wszystkie listy"
-  }
-
-  private fun collectViewModel() {
-    viewLifecycleOwner.lifecycleScope.launch {
-      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.state.collect { setContent(it) }
-      }
+        return binding.root
     }
-  }
 
-  private fun setFloatingButtonOnClickListener() {
-    binding.floatingButton.setOnClickListener {
-      navigateToTodoListCreator()
+    private fun setToolbarTitle() {
+        requireActivity().findViewById<Toolbar>(R.id.toolbar).title = "Wszystkie listy"
     }
-  }
 
-  private fun setContent(state: TodoListsOverviewState) {
-    state.allTodoLists?.let { setRecyclerView(it) }
-  }
-
-  private fun setRecyclerView(allTodoLists: List<TodoList>) {
-    binding.recyclerView.apply {
-      adapter = TodoListsOverviewAdapter(allTodoLists)
-      layoutManager = LinearLayoutManager(requireContext())
+    private fun collectViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { setContent(it) }
+            }
+        }
     }
-  }
 
-  private fun navigateToTodoListCreator() {
-    Navigation.findNavController(binding.root).navigate(
-      R.id.action_todoListsOverview_to_todoListCreator
-    )
-  }
+    private fun setFloatingButtonOnClickListener() {
+        binding.floatingButton.setOnClickListener {
+            navigateToTodoListCreator()
+        }
+    }
+
+    private fun setContent(state: TodoListsOverviewState) {
+        state.allTodoLists?.let { setRecyclerView(it) }
+    }
+
+    private fun setRecyclerView(allTodoLists: List<TodoList>) {
+        binding.recyclerView.apply {
+            adapter = TodoListsOverviewAdapter(allTodoLists)
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun navigateToTodoListCreator() {
+        val action = TodoListsOverviewDirections.actionTodoListsOverviewToTodoListCreator(
+            todoListId = null,
+        )
+        Navigation.findNavController(binding.root).navigate(action)
+    }
 }
