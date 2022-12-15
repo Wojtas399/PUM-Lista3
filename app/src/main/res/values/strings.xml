@@ -8,6 +8,7 @@
     <string name="todo_list_creator_list_number">Numer listy</string>
     <string name="todo_list_creator_deadline">Termin zwrotu</string>
     <string name="todo_list_creator_description">Opis</string>
+    <string name="todo_list_creator_photo">Zdjęcie</string>
     <string name="fab_add">Add</string>
     <string name="item_title">Item title</string>
     <string name="item_subtitle">Item subtitle</string>

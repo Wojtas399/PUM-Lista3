@@ -8,7 +8,8 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:padding="24dp"
-        tools:context=".todoListCreator.TodoListCreator">
+        tools:context=".todoListCreator.TodoListCreator"
+        android:background="@color/background">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +38,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:inputType="none" />
+                        android:inputType="none"
+                        android:background="@drawable/rounded_white_background" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -51,14 +53,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/todo_list_creator_deadline"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp" />
 
             <DatePicker
                     android:id="@+id/datePicker"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:calendarViewShown="false"
-                    android:datePickerMode="spinner" />
+                    android:datePickerMode="spinner"
+                    android:background="@drawable/rounded_white_background" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,12 +88,44 @@
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:inputType="textMultiLine"
-                        android:lines="8"
+                        android:lines="4"
                         android:overScrollMode="always"
                         android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"
-                        android:scrollHorizontally="false" />
+                        android:scrollHorizontally="false"
+                        android:background="@drawable/rounded_white_background" />
             </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_list_creator_photo"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                    android:id="@+id/imageViewBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:background="@drawable/rounded_white_background"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:clickable="true">
+
+                <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_placeholder_48"
+                        android:contentDescription="listImage" />
+            </LinearLayout>
         </LinearLayout>
 
         <Button

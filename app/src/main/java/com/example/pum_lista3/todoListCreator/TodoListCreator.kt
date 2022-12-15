@@ -1,6 +1,7 @@
 package com.example.pum_lista3.todoListCreator
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,7 @@ class TodoListCreator : Fragment() {
         setListNumberValueListener()
         setDateValueListener()
         setDescriptionValueListener()
+        setImageOnClickListener()
         setButtonOnClickListener()
 
         return binding.root
@@ -88,6 +90,12 @@ class TodoListCreator : Fragment() {
     private fun setDescriptionValueListener() {
         binding.listDescriptionInput.addTextChangedListener {
             viewModel.changeDescription(it.toString())
+        }
+    }
+
+    private fun setImageOnClickListener() {
+        binding.imageViewBackground.setOnClickListener {
+            Log.d("ON CLICK LISTENER", "Image has been clicked!")
         }
     }
 
