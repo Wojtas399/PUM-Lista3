@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wybierz źródło zdjęcia"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:padding="8dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fromCameraButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Z aparatu" />
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fromGalleryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Z galerii" />
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anuluj" />
+
+</LinearLayout>

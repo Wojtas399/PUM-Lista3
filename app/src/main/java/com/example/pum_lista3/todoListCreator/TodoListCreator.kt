@@ -16,14 +16,23 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListCreatorBinding
+import com.example.pum_lista3.databinding.FragmentTodoListCreatorBottomSheetBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 
+enum class ImageSource {
+    Camera,
+    Gallery,
+}
+
 @AndroidEntryPoint
 class TodoListCreator : Fragment() {
     private lateinit var binding: FragmentTodoListCreatorBinding
+    private lateinit var bottomSheetBinding: FragmentTodoListCreatorBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
     private val viewModel: TodoListCreatorViewModel by viewModels()
 
     override fun onCreateView(
@@ -31,7 +40,10 @@ class TodoListCreator : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTodoListCreatorBinding.inflate(inflater, container, false)
+        bottomSheetBinding =
+            FragmentTodoListCreatorBottomSheetBinding.inflate(inflater, container, false)
 
+        setBottomSheetDialog(callback = { editImage(it) })
         setupDropdownItem()
 
         collectViewModel()
@@ -46,6 +58,22 @@ class TodoListCreator : Fragment() {
         setButtonOnClickListener()
 
         return binding.root
+    }
+
+    private fun setBottomSheetDialog(
+        callback: (imageSource: ImageSource) -> Unit,
+    ) {
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetBinding.fromCameraButton.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            callback(ImageSource.Camera)
+        }
+        bottomSheetBinding.fromGalleryButton.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            callback(ImageSource.Gallery)
+        }
+        bottomSheetBinding.cancelButton.setOnClickListener { bottomSheetDialog.dismiss() }
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
     }
 
     private fun setupDropdownItem() {
@@ -95,7 +123,7 @@ class TodoListCreator : Fragment() {
 
     private fun setImageOnClickListener() {
         binding.imageViewBackground.setOnClickListener {
-            Log.d("ON CLICK LISTENER", "Image has been clicked!")
+            bottomSheetDialog.show()
         }
     }
 
@@ -108,6 +136,10 @@ class TodoListCreator : Fragment() {
             }
             goBackToPreviousScreen()
         }
+    }
+
+    private fun editImage(imageSource: ImageSource) {
+        Log.d("TEST", imageSource.toString())
     }
 
     private fun setToolbarTitleAndButtonLabel(creatorMode: TodoListCreatorMode) {
