@@ -1,6 +1,6 @@
 package com.example.pum_lista3.todoListCreator
 
-import android.net.Uri
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +32,7 @@ class TodoListCreator : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTodoListCreatorBinding.inflate(inflater, container, false)
-        imageProvider = ImageProvider(requireActivity().activityResultRegistry)
+        imageProvider = ImageProvider(requireContext(), requireActivity().activityResultRegistry)
 
         setupDropdownItem()
 
@@ -47,7 +47,7 @@ class TodoListCreator : Fragment() {
         setImageOnClickListener()
         setButtonOnClickListener()
         lifecycleScope.launch {
-            imageProvider.selectedImageUri.collect {
+            imageProvider.selectedImageBitmap.collect {
                 viewModel.changeImage(it)
             }
         }
@@ -70,7 +70,7 @@ class TodoListCreator : Fragment() {
                         setToolbarTitleAndButtonLabel(this.mode)
                         setInitialFormValues(this)
                     }
-                    state.imageUri?.run { setImage(this) }
+                    state.imageBitmap?.run { setImage(this) }
                 }
             }
         }
@@ -131,8 +131,8 @@ class TodoListCreator : Fragment() {
         todoListCreatorState.description?.run { setDescriptionValue(this) }
     }
 
-    private fun setImage(imageUri: Uri) {
-        binding.imageView.setImageURI(imageUri)
+    private fun setImage(imageBitmap: Bitmap) {
+        binding.imageView.setImageBitmap(imageBitmap)
     }
 
     private fun goBackToPreviousScreen() {

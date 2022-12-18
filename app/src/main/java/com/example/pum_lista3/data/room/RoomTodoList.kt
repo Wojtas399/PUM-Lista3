@@ -11,5 +11,5 @@ data class RoomTodoList(
   @ColumnInfo(name = "listNumber") val listNumber: Int,
   @ColumnInfo(name = "deadline") val deadline: String,
   @ColumnInfo(name = "description") val description: String,
-  @ColumnInfo(name = "imageUriAsString") val imageUriAsString: String?,
+  @ColumnInfo(name = "imageFilename") val imageFilename: String?,
 )

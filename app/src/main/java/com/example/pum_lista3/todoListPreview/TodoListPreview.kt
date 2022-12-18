@@ -1,6 +1,7 @@
 package com.example.pum_lista3.todoListPreview
 
 import android.app.AlertDialog
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -118,6 +119,7 @@ class TodoListPreview : Fragment() {
             setTitle(it.listNumber)
             setSubtitle(it.deadline)
             setDescription(it.description)
+            it.imageBitmap?.run { setImage(this) }
         }
     }
 
@@ -137,5 +139,9 @@ class TodoListPreview : Fragment() {
 
     private fun setDescription(description: String) {
         binding.previewDescription.text = description
+    }
+
+    private fun setImage(imageBitmap: Bitmap) {
+        binding.previewImage.setImageBitmap(imageBitmap)
     }
 }

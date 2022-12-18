@@ -1,6 +1,6 @@
 package com.example.pum_lista3.todoListCreator
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pum_lista3.domain.TodoList
@@ -34,7 +34,7 @@ data class TodoListCreatorState(
     val listNumber: Int? = null,
     val deadline: LocalDate? = null,
     val description: String? = null,
-    val imageUri: Uri? = null,
+    val imageBitmap: Bitmap? = null,
 )
 
 @HiltViewModel
@@ -87,10 +87,10 @@ class TodoListCreatorViewModel @Inject constructor(
         }
     }
 
-    fun changeImage(imageUri: Uri?) {
+    fun changeImage(imageBitmap: Bitmap?) {
         _state.update {
             it.copy(
-                imageUri = imageUri,
+                imageBitmap = imageBitmap,
             )
         }
     }
@@ -100,7 +100,12 @@ class TodoListCreatorViewModel @Inject constructor(
         val deadline: LocalDate? = _state.value.deadline
         val description: String? = _state.value.description
         if (listNumber != null && deadline != null && description != null) {
-            doAppropriateSubmitOperation(listNumber, deadline, description, _state.value.imageUri)
+            doAppropriateSubmitOperation(
+                listNumber,
+                deadline,
+                description,
+                _state.value.imageBitmap
+            )
         }
     }
 
@@ -111,7 +116,7 @@ class TodoListCreatorViewModel @Inject constructor(
                     listNumber = todoList.listNumber,
                     deadline = todoList.deadline,
                     description = todoList.description,
-                    imageUri = todoList.imageUri,
+                    imageBitmap = todoList.imageBitmap,
                 )
             }
         }
@@ -121,7 +126,7 @@ class TodoListCreatorViewModel @Inject constructor(
         listNumber: Int,
         deadline: LocalDate,
         description: String,
-        imageUri: Uri?,
+        imageBitmap: Bitmap?,
     ) {
         _state.value.mode.run {
             when (this) {
@@ -129,7 +134,7 @@ class TodoListCreatorViewModel @Inject constructor(
                     listNumber = listNumber,
                     deadline = deadline,
                     description = description,
-                    imageUri = imageUri,
+                    imageBitmap = imageBitmap,
                 )
                 TodoListCreatorMode.Edit -> _todoListId?.run {
                     updateListUseCase(
@@ -138,7 +143,7 @@ class TodoListCreatorViewModel @Inject constructor(
                             listNumber = listNumber,
                             deadline = deadline,
                             description = description,
-                            imageUri = imageUri,
+                            imageBitmap = imageBitmap,
                         )
                     )
                 }

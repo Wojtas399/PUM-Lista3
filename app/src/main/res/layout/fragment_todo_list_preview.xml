@@ -34,8 +34,15 @@
                 android:id="@+id/previewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/todo_list_description"
                 android:textColor="@color/black" />
+
+        <ImageView
+                android:id="@+id/previewImage"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:contentDescription="todo list image" />
     </LinearLayout>
 
     <Button

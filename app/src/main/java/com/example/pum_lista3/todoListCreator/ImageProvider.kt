@@ -1,7 +1,10 @@
 package com.example.pum_lista3.todoListCreator
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
@@ -10,17 +13,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class ImageProvider(
-    registry: ActivityResultRegistry
+    context: Context,
+    registry: ActivityResultRegistry,
 ) {
     private var imageResultLauncher: ActivityResultLauncher<Intent> =
         registry.register("key", ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = it.data
-                selectedImageUri.value = data?.data
+                val uri: Uri? = it.data?.data
+                val source = uri?.let { imageUri ->
+                    ImageDecoder.createSource(context.contentResolver, imageUri)
+                }
+                selectedImageBitmap.value = source?.let { imageSource ->
+                    ImageDecoder.decodeBitmap(imageSource)
+                }
             }
         }
 
-    val selectedImageUri: MutableStateFlow<Uri?> = MutableStateFlow(null)
+
+    val selectedImageBitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
 
     fun selectImage() {
         val intent = Intent(

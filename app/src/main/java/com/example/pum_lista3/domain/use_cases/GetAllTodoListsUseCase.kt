@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAllTodoListsUseCase @Inject constructor(
-  private val todoListInterface: TodoListRepository
+    private val todoListInterface: TodoListRepository
 ) {
-  operator fun invoke(): Flow<List<TodoList>> {
-    return todoListInterface.getAllLists()
-  }
+    operator fun invoke(): Flow<List<TodoList>> {
+        return todoListInterface.getAllLists()
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.pum_lista3.domain
 
-import android.net.Uri
+import android.graphics.Bitmap
 import java.time.LocalDate
 
 data class TodoList(
@@ -8,5 +8,5 @@ data class TodoList(
   val listNumber: Int,
   val deadline: LocalDate,
   val description: String,
-  val imageUri: Uri?
+  val imageBitmap: Bitmap?
 )

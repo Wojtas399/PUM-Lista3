@@ -1,6 +1,6 @@
 package com.example.pum_lista3.domain
 
-import android.net.Uri
+import android.graphics.Bitmap
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
@@ -13,7 +13,7 @@ interface TodoListRepository {
     listNumber: Int,
     deadline: LocalDate,
     description: String,
-    imageUri: Uri?
+    imageBitmap: Bitmap?
   )
 
   suspend fun updateList(todoList: TodoList)
