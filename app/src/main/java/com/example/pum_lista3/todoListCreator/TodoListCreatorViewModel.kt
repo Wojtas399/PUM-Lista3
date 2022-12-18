@@ -1,7 +1,9 @@
 package com.example.pum_lista3.todoListCreator
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pum_lista3.domain.TodoList
 import com.example.pum_lista3.domain.use_cases.AddListUseCase
 import com.example.pum_lista3.domain.use_cases.GetTodoListUseCase
 import com.example.pum_lista3.domain.use_cases.UpdateListUseCase
@@ -32,6 +34,7 @@ data class TodoListCreatorState(
     val listNumber: Int? = null,
     val deadline: LocalDate? = null,
     val description: String? = null,
+    val imageUri: Uri? = null,
 )
 
 @HiltViewModel
@@ -47,8 +50,8 @@ class TodoListCreatorViewModel @Inject constructor(
 
     fun initialize(todoListId: String?) {
         todoListId?.run {
-            _state.update { currentState ->
-                currentState.copy(
+            _state.update {
+                it.copy(
                     mode = TodoListCreatorMode.Edit
                 )
             }
@@ -58,8 +61,8 @@ class TodoListCreatorViewModel @Inject constructor(
     }
 
     fun changeListNumber(newNumber: Int) {
-        _state.update { currentState ->
-            currentState.copy(
+        _state.update {
+            it.copy(
                 status = TodoListCreatorStatus.InProgress,
                 listNumber = newNumber
             )
@@ -67,8 +70,8 @@ class TodoListCreatorViewModel @Inject constructor(
     }
 
     fun changeDeadline(date: LocalDate) {
-        _state.update { currentState ->
-            currentState.copy(
+        _state.update {
+            it.copy(
                 status = TodoListCreatorStatus.InProgress,
                 deadline = date,
             )
@@ -76,10 +79,18 @@ class TodoListCreatorViewModel @Inject constructor(
     }
 
     fun changeDescription(description: String) {
-        _state.update { currentState ->
-            currentState.copy(
+        _state.update {
+            it.copy(
                 status = TodoListCreatorStatus.InProgress,
                 description = description
+            )
+        }
+    }
+
+    fun changeImage(imageUri: Uri?) {
+        _state.update {
+            it.copy(
+                imageUri = imageUri,
             )
         }
     }
@@ -89,7 +100,7 @@ class TodoListCreatorViewModel @Inject constructor(
         val deadline: LocalDate? = _state.value.deadline
         val description: String? = _state.value.description
         if (listNumber != null && deadline != null && description != null) {
-            doAppropriateSubmitOperation(listNumber, deadline, description)
+            doAppropriateSubmitOperation(listNumber, deadline, description, _state.value.imageUri)
         }
     }
 
@@ -100,6 +111,7 @@ class TodoListCreatorViewModel @Inject constructor(
                     listNumber = todoList.listNumber,
                     deadline = todoList.deadline,
                     description = todoList.description,
+                    imageUri = todoList.imageUri,
                 )
             }
         }
@@ -109,6 +121,7 @@ class TodoListCreatorViewModel @Inject constructor(
         listNumber: Int,
         deadline: LocalDate,
         description: String,
+        imageUri: Uri?,
     ) {
         _state.value.mode.run {
             when (this) {
@@ -116,13 +129,17 @@ class TodoListCreatorViewModel @Inject constructor(
                     listNumber = listNumber,
                     deadline = deadline,
                     description = description,
+                    imageUri = imageUri,
                 )
                 TodoListCreatorMode.Edit -> _todoListId?.run {
                     updateListUseCase(
-                        id = this,
-                        listNumber = listNumber,
-                        deadline = deadline,
-                        description = description,
+                        todoList = TodoList(
+                            id = this,
+                            listNumber = listNumber,
+                            deadline = deadline,
+                            description = description,
+                            imageUri = imageUri,
+                        )
                     )
                 }
             }

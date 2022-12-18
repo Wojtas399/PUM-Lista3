@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pum_lista3.R
-import com.example.pum_lista3.domain.entities.TodoList
+import com.example.pum_lista3.domain.TodoList
 import com.example.pum_lista3.extensions.toUIFormat
 
 class TodoListsOverviewAdapter(

@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListsOverviewBinding
-import com.example.pum_lista3.domain.entities.TodoList
+import com.example.pum_lista3.domain.TodoList
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

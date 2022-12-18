@@ -1,28 +1,18 @@
 package com.example.pum_lista3.domain.use_cases
 
-import com.example.pum_lista3.domain.interfaces.TodoListInterface
+import com.example.pum_lista3.domain.TodoList
+import com.example.pum_lista3.domain.TodoListRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
 import javax.inject.Inject
 
 class UpdateListUseCase @Inject constructor(
-  private val todoListInterface: TodoListInterface
+  private val todoListInterface: TodoListRepository
 ) {
-  suspend operator fun invoke(
-    id: String,
-    listNumber: Int?,
-    deadline: LocalDate?,
-    description: String?,
-  ) {
+  suspend operator fun invoke(todoList: TodoList) {
     runBlocking {
       launch {
-        todoListInterface.updateList(
-          id = id,
-          listNumber = listNumber,
-          deadline = deadline,
-          description = description,
-        )
+        todoListInterface.updateList(todoList)
       }
     }
   }

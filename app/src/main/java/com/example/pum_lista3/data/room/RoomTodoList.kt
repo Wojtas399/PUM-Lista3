@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class TodoListDbModel(
+data class RoomTodoList(
   @PrimaryKey @ColumnInfo(name = "entryId") var uid: String = UUID.randomUUID().toString(),
   @ColumnInfo(name = "listNumber") val listNumber: Int,
   @ColumnInfo(name = "deadline") val deadline: String,
   @ColumnInfo(name = "description") val description: String,
+  @ColumnInfo(name = "imageUriAsString") val imageUriAsString: String?,
 )

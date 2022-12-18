@@ -1,10 +1,10 @@
-package com.example.pum_lista3.domain.interfaces
+package com.example.pum_lista3.domain
 
-import com.example.pum_lista3.domain.entities.TodoList
+import android.net.Uri
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
-interface TodoListInterface {
+interface TodoListRepository {
   fun getAllLists(): Flow<List<TodoList>>
 
   fun getListById(id: String): Flow<TodoList>
@@ -13,14 +13,10 @@ interface TodoListInterface {
     listNumber: Int,
     deadline: LocalDate,
     description: String,
+    imageUri: Uri?
   )
 
-  suspend fun updateList(
-    id: String,
-    listNumber: Int?,
-    deadline: LocalDate?,
-    description: String?
-  )
+  suspend fun updateList(todoList: TodoList)
 
   suspend fun deleteList(id: String)
 }
