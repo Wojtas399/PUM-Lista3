@@ -9,13 +9,13 @@ class AddListUseCase @Inject constructor(
     private val todoListInterface: TodoListRepository
 ) {
     suspend operator fun invoke(
-        listNumber: Int,
+        title: String,
         deadline: LocalDate,
         description: String,
         imageBitmap: Bitmap?,
     ) {
         todoListInterface.addList(
-            listNumber = listNumber,
+            title = title,
             deadline = deadline,
             description = description,
             imageBitmap = imageBitmap,

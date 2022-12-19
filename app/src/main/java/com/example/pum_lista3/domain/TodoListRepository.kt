@@ -10,7 +10,7 @@ interface TodoListRepository {
   fun getListById(id: String): Flow<TodoList>
 
   suspend fun addList(
-    listNumber: Int,
+    title: String,
     deadline: LocalDate,
     description: String,
     imageBitmap: Bitmap?

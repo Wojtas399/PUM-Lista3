@@ -31,7 +31,7 @@ class TodoListRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addList(
-        listNumber: Int,
+        title: String,
         deadline: LocalDate,
         description: String,
         imageBitmap: Bitmap?,
@@ -42,7 +42,7 @@ class TodoListRepositoryImpl @Inject constructor(
         }
         roomTodoListDao.insertToDoList(
             RoomTodoList(
-                listNumber = listNumber,
+                title = title,
                 deadline = deadline.toString(),
                 description = description,
                 imageFilename = imageFilename,
@@ -91,7 +91,7 @@ class TodoListRepositoryImpl @Inject constructor(
         val deadlineInArray = roomTodoList.deadline.split('-')
         return TodoList(
             id = roomTodoList.uid,
-            listNumber = roomTodoList.listNumber,
+            title = roomTodoList.title,
             deadline = LocalDate.of(
                 deadlineInArray[0].toInt(),
                 deadlineInArray[1].toInt(),
@@ -108,7 +108,7 @@ class TodoListRepositoryImpl @Inject constructor(
     ): RoomTodoList {
         return RoomTodoList(
             uid = todoList.id,
-            listNumber = todoList.listNumber,
+            title = todoList.title,
             deadline = todoList.deadline.toString(),
             description = todoList.description,
             imageFilename = imageFilename,

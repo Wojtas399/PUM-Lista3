@@ -31,7 +31,7 @@ enum class TodoListCreatorStatus {
 data class TodoListCreatorState(
     val mode: TodoListCreatorMode = TodoListCreatorMode.Create,
     val status: TodoListCreatorStatus = TodoListCreatorStatus.Initial,
-    val listNumber: Int? = null,
+    val title: String? = null,
     val deadline: LocalDate? = null,
     val description: String? = null,
     val imageBitmap: Bitmap? = null,
@@ -60,11 +60,11 @@ class TodoListCreatorViewModel @Inject constructor(
         }
     }
 
-    fun changeListNumber(newNumber: Int) {
+    fun changeTitle(title: String) {
         _state.update {
             it.copy(
                 status = TodoListCreatorStatus.InProgress,
-                listNumber = newNumber
+                title = title
             )
         }
     }
@@ -96,12 +96,12 @@ class TodoListCreatorViewModel @Inject constructor(
     }
 
     suspend fun submit() = withContext(Dispatchers.IO) {
-        val listNumber: Int? = _state.value.listNumber
+        val title: String? = _state.value.title
         val deadline: LocalDate? = _state.value.deadline
         val description: String? = _state.value.description
-        if (listNumber != null && deadline != null && description != null) {
+        if (title != null && deadline != null && description != null) {
             doAppropriateSubmitOperation(
-                listNumber,
+                title,
                 deadline,
                 description,
                 _state.value.imageBitmap
@@ -113,7 +113,7 @@ class TodoListCreatorViewModel @Inject constructor(
         getTodoListUseCase(todoListId).collect { todoList ->
             _state.update { currentState ->
                 currentState.copy(
-                    listNumber = todoList.listNumber,
+                    title = todoList.title,
                     deadline = todoList.deadline,
                     description = todoList.description,
                     imageBitmap = todoList.imageBitmap,
@@ -123,7 +123,7 @@ class TodoListCreatorViewModel @Inject constructor(
     }
 
     private suspend fun doAppropriateSubmitOperation(
-        listNumber: Int,
+        title: String,
         deadline: LocalDate,
         description: String,
         imageBitmap: Bitmap?,
@@ -131,7 +131,7 @@ class TodoListCreatorViewModel @Inject constructor(
         _state.value.mode.run {
             when (this) {
                 TodoListCreatorMode.Create -> addTodoListUseCase(
-                    listNumber = listNumber,
+                    title = title,
                     deadline = deadline,
                     description = description,
                     imageBitmap = imageBitmap,
@@ -140,7 +140,7 @@ class TodoListCreatorViewModel @Inject constructor(
                     updateListUseCase(
                         todoList = TodoList(
                             id = this,
-                            listNumber = listNumber,
+                            title = title,
                             deadline = deadline,
                             description = description,
                             imageBitmap = imageBitmap,

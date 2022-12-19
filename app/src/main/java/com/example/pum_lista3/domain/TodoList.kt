@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 data class TodoList(
   val id: String,
-  val listNumber: Int,
+  val title: String,
   val deadline: LocalDate,
   val description: String,
   val imageBitmap: Bitmap?

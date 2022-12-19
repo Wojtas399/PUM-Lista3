@@ -38,10 +38,9 @@ class TodoListsOverviewAdapter(
     private val deadlineTextView: TextView = view.findViewById(R.id.todoListDeadline)
 
     fun bind(todoList: TodoList) {
-      val title = "Lista ${todoList.listNumber}"
-      val subtitle = "Termin oddania: ${todoList.deadline.toUIFormat()}"
-      titleTextView.text = title
-      deadlineTextView.text = subtitle
+      val deadlineText = "Termin oddania: ${todoList.deadline.toUIFormat()}"
+      titleTextView.text = todoList.title
+      deadlineTextView.text = deadlineText
       card.setOnClickListener {
         val action = TodoListsOverviewDirections.actionTodoListsOverviewToTodoListPreview(
           todoListId = todoList.id,

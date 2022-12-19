@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -41,7 +40,6 @@ class TodoListCreator : Fragment() {
         imageProvider = ImageProvider(requireContext(), requireActivity().activityResultRegistry)
         imageActionSheet = BottomSheetDialog(requireContext())
 
-        setupDropdownItem()
         setImageActionSheet()
 
         collectViewModel()
@@ -49,7 +47,7 @@ class TodoListCreator : Fragment() {
             viewModel.initialize(this)
         }
 
-        setListNumberValueListener()
+        setTitleValueListener()
         setDateValueListener()
         setDescriptionValueListener()
         setImageOnClickListener()
@@ -61,13 +59,6 @@ class TodoListCreator : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun setupDropdownItem() {
-        val listNumbers = resources.getStringArray(R.array.list_numbers)
-        val arrayAdapter =
-            ArrayAdapter(requireContext(), R.layout.dropdown_item, listNumbers)
-        binding.listNumberInput.setAdapter(arrayAdapter)
     }
 
     private fun setImageActionSheet() {
@@ -105,9 +96,9 @@ class TodoListCreator : Fragment() {
         return args.todoListId
     }
 
-    private fun setListNumberValueListener() {
-        binding.listNumberInput.setOnItemClickListener { _, _, itemIndex, _ ->
-            viewModel.changeListNumber(itemIndex + 1)
+    private fun setTitleValueListener() {
+        binding.listTitleInput.addTextChangedListener {
+            viewModel.changeTitle(it.toString())
         }
     }
 
@@ -153,13 +144,17 @@ class TodoListCreator : Fragment() {
     }
 
     private fun setInitialFormValues(todoListCreatorState: TodoListCreatorState) {
-        todoListCreatorState.listNumber?.run { setListNumberValue(this) }
+        todoListCreatorState.title?.run { setTitle(this) }
         todoListCreatorState.deadline?.run { setDeadlineValue(this) }
         todoListCreatorState.description?.run { setDescriptionValue(this) }
     }
 
     private fun setImage(imageBitmap: Bitmap?) {
-        binding.imageView.setImageBitmap(imageBitmap)
+        if (imageBitmap == null) {
+            binding.imageView.setImageResource(R.drawable.image_placeholder_48)
+        } else {
+            binding.imageView.setImageBitmap(imageBitmap)
+        }
     }
 
     private fun goBackToPreviousScreen() {
@@ -181,8 +176,8 @@ class TodoListCreator : Fragment() {
         }
     }
 
-    private fun setListNumberValue(number: Int) {
-        binding.listNumberInput.setText("$number", false)
+    private fun setTitle(title: String) {
+        binding.listTitleInput.setText(title)
     }
 
     private fun setDeadlineValue(deadline: LocalDate) {

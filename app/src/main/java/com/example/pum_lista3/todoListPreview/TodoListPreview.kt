@@ -116,10 +116,10 @@ class TodoListPreview : Fragment() {
 
     private fun setContent(state: TodoListPreviewState) {
         state.todoList?.let {
-            setTitle(it.listNumber)
+            binding.previewTitle.text = it.title
             setSubtitle(it.deadline)
-            setDescription(it.description)
-            it.imageBitmap?.run { setImage(this) }
+            binding.previewDescription.text = it.description
+            it.imageBitmap.run { setImage(this) }
         }
     }
 
@@ -127,21 +127,16 @@ class TodoListPreview : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun setTitle(listNumber: Int) {
-        val text = "Lista $listNumber"
-        binding.previewTitle.text = text
-    }
-
     private fun setSubtitle(deadline: LocalDate) {
         val text = "Termin zwrotu: ${deadline.toUIFormat()}"
         binding.previewSubtitle.text = text
     }
 
-    private fun setDescription(description: String) {
-        binding.previewDescription.text = description
-    }
-
-    private fun setImage(imageBitmap: Bitmap) {
-        binding.previewImage.setImageBitmap(imageBitmap)
+    private fun setImage(imageBitmap: Bitmap?) {
+        if (imageBitmap == null) {
+            binding.previewImage.setImageResource(R.drawable.image_placeholder_48)
+        } else {
+            binding.previewImage.setImageBitmap(imageBitmap)
+        }
     }
 }
