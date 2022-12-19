@@ -16,6 +16,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.pum_lista3.R
 import com.example.pum_lista3.databinding.FragmentTodoListCreatorBinding
+import com.example.pum_lista3.databinding.FragmentTodoListCreatorImageActionSheetBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -24,7 +26,9 @@ import java.time.LocalDate
 @AndroidEntryPoint
 class TodoListCreator : Fragment() {
     private lateinit var binding: FragmentTodoListCreatorBinding
+    private lateinit var imageActionSheetBinding: FragmentTodoListCreatorImageActionSheetBinding
     private lateinit var imageProvider: ImageProvider
+    private lateinit var imageActionSheet: BottomSheetDialog
     private val viewModel: TodoListCreatorViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,9 +36,13 @@ class TodoListCreator : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTodoListCreatorBinding.inflate(inflater, container, false)
+        imageActionSheetBinding =
+            FragmentTodoListCreatorImageActionSheetBinding.inflate(inflater, container, false)
         imageProvider = ImageProvider(requireContext(), requireActivity().activityResultRegistry)
+        imageActionSheet = BottomSheetDialog(requireContext())
 
         setupDropdownItem()
+        setImageActionSheet()
 
         collectViewModel()
         getTodoListIdFromArgs().run {
@@ -62,6 +70,21 @@ class TodoListCreator : Fragment() {
         binding.listNumberInput.setAdapter(arrayAdapter)
     }
 
+    private fun setImageActionSheet() {
+        imageActionSheetBinding.changeImageButton.setOnClickListener {
+            imageActionSheet.dismiss()
+            imageProvider.selectImage()
+        }
+        imageActionSheetBinding.deleteImageButton.setOnClickListener {
+            imageActionSheet.dismiss()
+            viewModel.changeImage(null)
+        }
+        imageActionSheetBinding.cancelButton.setOnClickListener {
+            imageActionSheet.dismiss()
+        }
+        imageActionSheet.setContentView(imageActionSheetBinding.root)
+    }
+
     private fun collectViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -70,7 +93,7 @@ class TodoListCreator : Fragment() {
                         setToolbarTitleAndButtonLabel(this.mode)
                         setInitialFormValues(this)
                     }
-                    state.imageBitmap?.run { setImage(this) }
+                    state.imageBitmap.run { setImage(this) }
                 }
             }
         }
@@ -103,7 +126,11 @@ class TodoListCreator : Fragment() {
 
     private fun setImageOnClickListener() {
         binding.imageViewBackground.setOnClickListener {
-            imageProvider.selectImage()
+            if (viewModel.state.value.imageBitmap != null) {
+                imageActionSheet.show()
+            } else {
+                imageProvider.selectImage()
+            }
         }
     }
 
@@ -131,7 +158,7 @@ class TodoListCreator : Fragment() {
         todoListCreatorState.description?.run { setDescriptionValue(this) }
     }
 
-    private fun setImage(imageBitmap: Bitmap) {
+    private fun setImage(imageBitmap: Bitmap?) {
         binding.imageView.setImageBitmap(imageBitmap)
     }
 
