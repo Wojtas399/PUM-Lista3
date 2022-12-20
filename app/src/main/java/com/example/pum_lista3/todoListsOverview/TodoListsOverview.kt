@@ -61,7 +61,7 @@ class TodoListsOverview : Fragment() {
 
     private fun setRecyclerView(allTodoLists: List<TodoList>) {
         binding.recyclerView.apply {
-            adapter = TodoListsOverviewAdapter(allTodoLists)
+            adapter = TodoListsOverviewAdapter(allTodoLists.sortedBy { it.deadline })
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
