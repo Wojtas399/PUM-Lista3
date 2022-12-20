@@ -32,7 +32,7 @@ data class TodoListCreatorState(
     val mode: TodoListCreatorMode = TodoListCreatorMode.Create,
     val status: TodoListCreatorStatus = TodoListCreatorStatus.Initial,
     val title: String? = null,
-    val deadline: LocalDate? = null,
+    val deadline: LocalDate = LocalDate.now(),
     val description: String? = null,
     val imageBitmap: Bitmap? = null,
 )
@@ -97,12 +97,11 @@ class TodoListCreatorViewModel @Inject constructor(
 
     suspend fun submit() = withContext(Dispatchers.IO) {
         val title: String? = _state.value.title
-        val deadline: LocalDate? = _state.value.deadline
         val description: String? = _state.value.description
-        if (title != null && deadline != null && description != null) {
+        if (title != null && description != null) {
             doAppropriateSubmitOperation(
                 title,
-                deadline,
+                _state.value.deadline,
                 description,
                 _state.value.imageBitmap
             )

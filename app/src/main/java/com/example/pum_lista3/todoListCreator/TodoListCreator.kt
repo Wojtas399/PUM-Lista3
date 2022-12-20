@@ -41,6 +41,7 @@ class TodoListCreator : Fragment() {
         imageActionSheet = BottomSheetDialog(requireContext())
 
         setImageActionSheet()
+        setMinDatePickerDate()
 
         collectViewModel()
         getTodoListIdFromArgs().run {
@@ -74,6 +75,10 @@ class TodoListCreator : Fragment() {
             imageActionSheet.dismiss()
         }
         imageActionSheet.setContentView(imageActionSheetBinding.root)
+    }
+
+    private fun setMinDatePickerDate() {
+        binding.datePicker.minDate = System.currentTimeMillis() - 1000
     }
 
     private fun collectViewModel() {
@@ -145,7 +150,7 @@ class TodoListCreator : Fragment() {
 
     private fun setInitialFormValues(todoListCreatorState: TodoListCreatorState) {
         todoListCreatorState.title?.run { setTitle(this) }
-        todoListCreatorState.deadline?.run { setDeadlineValue(this) }
+        todoListCreatorState.deadline.run { setDeadlineValue(this) }
         todoListCreatorState.description?.run { setDescriptionValue(this) }
     }
 
