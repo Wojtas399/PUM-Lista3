@@ -36,6 +36,7 @@ class TodoListPreview : Fragment() {
 
         setToolbarTitle()
         setMenuProvider()
+        setImageOnClickListener()
         setEditButtonOnClickListener()
 
         collectViewModel()
@@ -62,6 +63,12 @@ class TodoListPreview : Fragment() {
                     return true
                 }
             }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun setImageOnClickListener() {
+        binding.previewImage.setOnClickListener {
+            navigateToImagePreview()
+        }
     }
 
     private fun setEditButtonOnClickListener() {
@@ -112,6 +119,16 @@ class TodoListPreview : Fragment() {
             }.setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
         val alert = dialogBuilder.create()
         alert.show()
+    }
+
+    private fun navigateToImagePreview() {
+        val imageBitmap = viewModel.state.value.todoList?.imageBitmap
+        imageBitmap?.run {
+            val action = TodoListPreviewDirections.actionTodoListPreviewToImagePreview(
+                imageBitmap = this
+            )
+            Navigation.findNavController(binding.root).navigate(action)
+        }
     }
 
     private fun setContent(state: TodoListPreviewState) {

@@ -26,6 +26,9 @@
         <action
                 android:id="@+id/action_todoListPreview_to_todoListCreator"
                 app:destination="@id/todoListCreator" />
+        <action
+                android:id="@+id/action_todoListPreview_to_imagePreview"
+                app:destination="@id/imagePreview" />
     </fragment>
     <fragment
             android:id="@+id/todoListsOverview"
@@ -37,5 +40,14 @@
         <action
                 android:id="@+id/action_todoListsOverview_to_todoListCreator"
                 app:destination="@id/todoListCreator" />
+    </fragment>
+    <fragment
+            android:id="@+id/imagePreview"
+            android:name="com.example.pum_lista3.imagePreview.ImagePreview"
+            android:label="fragment_image_preview"
+            tools:layout="@layout/fragment_image_preview" >
+        <argument
+                android:name="imageBitmap"
+                app:argType="android.graphics.Bitmap" />
     </fragment>
 </navigation>
