@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">PUM-Lista3</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todo_list_title">TODO list title</string>
+    <string name="todo_list_deadline">TODO list deadline</string>
+    <string name="todo_list_description">TODO list description</string>
+    <string name="todo_list_edit_button">Edytuj</string>
+    <string name="todo_list_creator_list_title">Tytuł listy</string>
+    <string name="todo_list_creator_deadline">Termin zwrotu</string>
+    <string name="todo_list_creator_description">Opis</string>
+    <string name="todo_list_creator_photo">Zdjęcie</string>
+    <string name="fab_add">Add</string>
+    <string name="item_title">Item title</string>
+    <string name="item_subtitle">Item subtitle</string>
+
+    <string-array name="list_numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
 </resources>
